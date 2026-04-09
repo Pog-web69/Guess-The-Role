@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Guess The Role | Discord Bot</title>
+  <link rel="icon" type="image/png" href="icon.png" />
+  <link rel="shortcut icon" href="icon.png" />
+  <link rel="apple-touch-icon" href="icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
@@ -48,6 +51,7 @@
       --bg-grad-2: #dcfce7;
     }
 
+    html { scroll-behavior: smooth; }
     * { box-sizing: border-box; }
     body {
       margin: 0;
@@ -93,12 +97,9 @@
       width: 34px;
       height: 34px;
       border-radius: 10px;
-      display: grid;
-      place-items: center;
-      background: linear-gradient(135deg, var(--brand), var(--brand-2));
-      color: #fff;
-      font-size: 14px;
-      font-weight: 700;
+      display: block;
+      background: url("icon.png") center / cover no-repeat;
+      border: 1px solid var(--line);
     }
 
     .nav-links {
@@ -341,7 +342,7 @@
   <header class="nav">
     <div class="wrap nav-inner">
       <a class="brand" href="index.html">
-        <span class="brand-mark">GTR</span>
+        <span class="brand-mark" aria-hidden="true"></span>
         <span>Guess The Role</span>
       </a>
       <div class="nav-tools">
@@ -359,23 +360,22 @@
   <main class="wrap">
     <section class="hero">
       <div>
-        <span class="pill">Discord Bot · Among Us Mods</span>
+        <span class="pill">Guessing Bot · Among Us</span>
         <h1>Guess modded roles from descriptions.</h1>
         <p class="lead">
-          Guess The Role is a Discord game bot for EHR and TOHO communities. Start rounds, guess role names, use hints,
-          and compete on server + global leaderboards.
+          Guess The Role is a Game Bot for Modded Among Us communities. 
+          Start rounds, guess role names, use hints, and compete on leaderboards.
         </p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="#" aria-label="Add to Discord">Add to Discord</a>
-          <a class="btn btn-ghost" href="https://github.com/hackyue/Guess-The-Role-MAU" target="_blank" rel="noreferrer">View Source</a>
+          <a class="btn btn-primary" href="https://discord.com/oauth2/authorize?client_id=1258630066267488417&permissions=329728&integration_type=0&scope=bot+applications.commands" target="_blank" rel="noreferrer" aria-label="Add to Discord">Add to Discord</a>
+          <a class="btn btn-ghost" href="https://discord.gg/meZrffHv78" target="_blank" rel="noreferrer">Support</a>
         </div>
       </div>
       <aside class="hero-card">
         <p class="mini-title">What it supports</p>
         <ul class="list">
           <li>Role pools: Endless Host Roles (EHR), Town of Host Optimized (TOHO)</li>
-          <li>Hints, skip/end controls, and guess modal buttons</li>
-          <li>Server + global leaderboard and per-user stats</li>
+          <li>Leaderboards and user stats</li>
           <li>MongoDB persistence for scores and server settings</li>
         </ul>
       </aside>
@@ -398,7 +398,7 @@
         </article>
         <article class="card">
           <h3>3) Climb rankings</h3>
-          <p>Earn points for correct guesses and track your progress in server and global leaderboard views.</p>
+          <p>Earn points for correct guesses and track your progress in leaderboards.</p>
         </article>
       </div>
     </section>
@@ -415,14 +415,14 @@
         <article class="cmd"><b>/hint</b><p>Reveal the next hint (up to 3 hints per round).</p></article>
         <article class="cmd"><b>/leaderboard</b><p>Show server leaderboard (use <span class="mono">scope:global</span> for global).</p></article>
         <article class="cmd"><b>/mystats</b><p>View your score, rank, correct guesses, and wrong guesses.</p></article>
-        <article class="cmd"><b>/settings</b><p>Admin panel to set game channel and enabled role pools.</p></article>
         <article class="cmd"><b>/gamehelp</b><p>Interactive help menu for users/admins.</p></article>
-        <article class="cmd"><b>/debug</b><p>Developer-only shutdown command.</p></article>
+        <article class="cmd"><b>/end</b><p>Ends the current round.</p></article>
+        <article class="cmd"><b>/settings</b><p>Admin panel to set game channel and enabled role pools.</p></article>
       </div>
 
       <div class="cta">
         <div>
-          <strong>Need legal details?</strong>
+          <strong>Discord Required</strong>
           <div style="color: var(--muted); margin-top: 0.25rem;">Review Terms and Privacy before public launch.</div>
         </div>
         <div style="display:flex;gap:0.6rem;flex-wrap:wrap;">
@@ -466,3 +466,5 @@
   </script>
 </body>
 </html>
+
+
