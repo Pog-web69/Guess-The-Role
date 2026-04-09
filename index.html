@@ -1,0 +1,468 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guess The Role | Discord Bot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0b1118;
+      --surface: #111927;
+      --surface-2: #1b2738;
+      --text: #e6edf6;
+      --muted: #a4b1c2;
+      --line: #253449;
+      --brand: #22c1a8;
+      --brand-2: #fb923c;
+      --brand-soft: #11352f;
+      --danger-soft: #3a2414;
+      --shadow: 0 14px 40px rgba(4, 8, 14, 0.55);
+      --mono-bg: #102532;
+      --mono-line: #1f4b62;
+      --mono-text: #67e8f9;
+      --cta-bg: linear-gradient(120deg, #132735 0%, #342112 100%);
+      --bg-grad-1: #10243a;
+      --bg-grad-2: #123229;
+    }
+
+    [data-theme="light"] {
+      --bg: #f7f8fa;
+      --surface: #ffffff;
+      --surface-2: #eef2f5;
+      --text: #101418;
+      --muted: #5a6772;
+      --line: #d7dee5;
+      --brand: #0f766e;
+      --brand-2: #ea580c;
+      --brand-soft: #d1fae5;
+      --danger-soft: #ffedd5;
+      --shadow: 0 14px 40px rgba(16, 24, 40, 0.08);
+      --mono-bg: #ecfeff;
+      --mono-line: #bae6fd;
+      --mono-text: #0f766e;
+      --cta-bg: linear-gradient(120deg, #ecfeff 0%, #fff7ed 100%);
+      --bg-grad-1: #dbeafe;
+      --bg-grad-2: #dcfce7;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Sora", system-ui, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 700px at 100% -10%, var(--bg-grad-1) 0%, transparent 60%),
+        radial-gradient(900px 600px at -10% 0%, var(--bg-grad-2) 0%, transparent 55%),
+        var(--bg);
+      line-height: 1.6;
+    }
+
+    .wrap { width: min(1100px, 92vw); margin: 0 auto; }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(8px);
+      background: color-mix(in oklab, var(--bg) 86%, #ffffff 14%);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-inner {
+      min-height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 0.2rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.86rem;
+      font-weight: 600;
+      padding: 0.45rem 0.75rem;
+      border-radius: 10px;
+    }
+
+    .nav-links a:hover { background: var(--surface-2); color: var(--text); }
+
+    .nav-tools {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .theme-toggle {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 0.44rem 0.72rem;
+      font: inherit;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .theme-toggle:hover { background: var(--surface-2); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      padding: 0.8rem 1.15rem;
+      transition: 0.15s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--brand), #0d9488);
+      color: #fff;
+    }
+
+    .btn-primary:hover { transform: translateY(-1px); filter: brightness(1.02); }
+
+    .btn-ghost {
+      border-color: var(--line);
+      color: var(--text);
+      background: var(--surface);
+    }
+
+    .hero {
+      padding: 5.5rem 0 3.2rem;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: var(--brand-soft);
+      border: 1px solid #99f6e4;
+      color: #0f766e;
+      padding: 0.34rem 0.72rem;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    h1 {
+      margin: 0.9rem 0 0.8rem;
+      font-size: clamp(2rem, 5.8vw, 4rem);
+      line-height: 1.04;
+      letter-spacing: -0.045em;
+    }
+
+    .lead {
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(0.98rem, 1.3vw, 1.08rem);
+      max-width: 60ch;
+    }
+
+    .hero-actions { margin-top: 1.5rem; display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+    .hero-card {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: 18px;
+      padding: 1.15rem;
+      box-shadow: var(--shadow);
+    }
+
+    .mini-title {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin: 0 0 0.8rem;
+      font-weight: 700;
+    }
+
+    .list { margin: 0; padding-left: 1.2rem; color: var(--muted); }
+    .list li { margin: 0.4rem 0; }
+
+    section { padding: 2.5rem 0; }
+
+    .section-head { margin-bottom: 1rem; }
+    .section-kicker {
+      margin: 0;
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.11em;
+      color: var(--brand);
+      font-weight: 700;
+    }
+
+    .section-title {
+      margin: 0.5rem 0 0.3rem;
+      font-size: clamp(1.5rem, 3.1vw, 2.4rem);
+      letter-spacing: -0.03em;
+      line-height: 1.12;
+    }
+
+    .section-sub { margin: 0; color: var(--muted); max-width: 72ch; }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.9rem;
+      margin-top: 1.2rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 1rem;
+    }
+
+    .card h3 { margin: 0 0 0.4rem; font-size: 1rem; }
+    .card p { margin: 0; color: var(--muted); font-size: 0.92rem; }
+
+    .mono {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.9em;
+      color: var(--mono-text);
+      background: var(--mono-bg);
+      border: 1px solid var(--mono-line);
+      padding: 0.06rem 0.34rem;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+
+    .commands {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+
+    .cmd {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 0.95rem;
+    }
+
+    .cmd b {
+      font-family: "JetBrains Mono", monospace;
+      color: var(--brand);
+      display: inline-block;
+      margin-bottom: 0.35rem;
+      font-size: 0.89rem;
+    }
+
+    .cmd p { margin: 0; color: var(--muted); font-size: 0.9rem; }
+
+    .cta {
+      border: 1px solid var(--line);
+      background: var(--cta-bg);
+      border-radius: 18px;
+      padding: 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 1.1rem;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      margin-top: 2rem;
+      padding: 1.6rem 0 2.4rem;
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .foot {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .foot a { color: var(--muted); text-decoration: none; }
+    .foot a:hover { color: var(--text); }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; padding-top: 4.2rem; }
+      .grid-3 { grid-template-columns: 1fr; }
+      .commands { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">GTR</span>
+        <span>Guess The Role</span>
+      </a>
+      <div class="nav-tools">
+        <nav class="nav-links">
+          <a href="#play">How It Works</a>
+          <a href="#commands">Commands</a>
+          <a href="tos.html">Terms</a>
+          <a href="privacy.html">Privacy</a>
+        </nav>
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle theme">Light mode</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div>
+        <span class="pill">Discord Bot · Among Us Mods</span>
+        <h1>Guess modded roles from descriptions.</h1>
+        <p class="lead">
+          Guess The Role is a Discord game bot for EHR and TOHO communities. Start rounds, guess role names, use hints,
+          and compete on server + global leaderboards.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#" aria-label="Add to Discord">Add to Discord</a>
+          <a class="btn btn-ghost" href="https://github.com/hackyue/Guess-The-Role-MAU" target="_blank" rel="noreferrer">View Source</a>
+        </div>
+      </div>
+      <aside class="hero-card">
+        <p class="mini-title">What it supports</p>
+        <ul class="list">
+          <li>Role pools: Endless Host Roles (EHR), Town of Host Optimized (TOHO)</li>
+          <li>Hints, skip/end controls, and guess modal buttons</li>
+          <li>Server + global leaderboard and per-user stats</li>
+          <li>MongoDB persistence for scores and server settings</li>
+        </ul>
+      </aside>
+    </section>
+
+    <section id="play">
+      <div class="section-head">
+        <p class="section-kicker">How It Works</p>
+        <h2 class="section-title">Fast to learn, hard to master.</h2>
+        <p class="section-sub">Gameplay stays simple while role knowledge depth keeps rounds competitive.</p>
+      </div>
+      <div class="grid-3">
+        <article class="card">
+          <h3>1) Start a round</h3>
+          <p>Use <span class="mono">/start</span>. The bot posts a role description without the role name.</p>
+        </article>
+        <article class="card">
+          <h3>2) Guess the role</h3>
+          <p>Use <span class="mono">/guess &lt;role&gt;</span> or the Guess button under the round message.</p>
+        </article>
+        <article class="card">
+          <h3>3) Climb rankings</h3>
+          <p>Earn points for correct guesses and track your progress in server and global leaderboard views.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="commands">
+      <div class="section-head">
+        <p class="section-kicker">Commands</p>
+        <h2 class="section-title">Core command set</h2>
+        <p class="section-sub">Slash and prefix commands are both supported for most gameplay actions.</p>
+      </div>
+      <div class="commands">
+        <article class="cmd"><b>/start</b><p>Start a new round in the configured game channel.</p></article>
+        <article class="cmd"><b>/guess &lt;role&gt;</b><p>Submit a role guess for the current round.</p></article>
+        <article class="cmd"><b>/hint</b><p>Reveal the next hint (up to 3 hints per round).</p></article>
+        <article class="cmd"><b>/leaderboard</b><p>Show server leaderboard (use <span class="mono">scope:global</span> for global).</p></article>
+        <article class="cmd"><b>/mystats</b><p>View your score, rank, correct guesses, and wrong guesses.</p></article>
+        <article class="cmd"><b>/settings</b><p>Admin panel to set game channel and enabled role pools.</p></article>
+        <article class="cmd"><b>/gamehelp</b><p>Interactive help menu for users/admins.</p></article>
+        <article class="cmd"><b>/debug</b><p>Developer-only shutdown command.</p></article>
+      </div>
+
+      <div class="cta">
+        <div>
+          <strong>Need legal details?</strong>
+          <div style="color: var(--muted); margin-top: 0.25rem;">Review Terms and Privacy before public launch.</div>
+        </div>
+        <div style="display:flex;gap:0.6rem;flex-wrap:wrap;">
+          <a class="btn btn-ghost" href="tos.html">Terms</a>
+          <a class="btn btn-ghost" href="privacy.html">Privacy</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap foot">
+      <div>Guess The Role · MAU Edition</div>
+      <div style="display:flex;gap:1rem;">
+        <a href="index.html">Home</a>
+        <a href="tos.html">Terms</a>
+        <a href="privacy.html">Privacy</a>
+      </div>
+    </div>
+  </footer>
+  <script>
+    (() => {
+      const key = "gtr-theme";
+      const root = document.documentElement;
+      const button = document.getElementById("theme-toggle");
+      const applyTheme = (theme) => {
+        root.setAttribute("data-theme", theme);
+        if (!button) return;
+        button.textContent = theme === "light" ? "Dark mode" : "Light mode";
+        button.setAttribute("aria-label", `Switch to ${theme === "light" ? "dark" : "light"} mode`);
+      };
+      const savedTheme = localStorage.getItem(key);
+      applyTheme(savedTheme === "light" ? "light" : "dark");
+      button?.addEventListener("click", () => {
+        const current = root.getAttribute("data-theme") === "light" ? "light" : "dark";
+        const next = current === "dark" ? "light" : "dark";
+        localStorage.setItem(key, next);
+        applyTheme(next);
+      });
+    })();
+  </script>
+</body>
+</html>
